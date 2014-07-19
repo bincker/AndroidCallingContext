@@ -338,7 +338,7 @@ public class Infoflow extends AbstractInfoflow {
         if (callgraphAlgorithm != CallgraphAlgorithm.OnDemand)
         	logger.info("Callgraph has {} edges", Scene.v().getCallGraph().size());
         iCfg = icfgFactory.buildBiDirICFG(callgraphAlgorithm);
-        
+       
         int numThreads = Runtime.getRuntime().availableProcessors();
 		CountingThreadPoolExecutor executor = createExecutor(numThreads);
 		
@@ -490,15 +490,15 @@ public class Infoflow extends AbstractInfoflow {
 		if (results.getResults().isEmpty())
 			logger.warn("No results found.");
 		else for (Entry<SinkInfo, Set<SourceInfo>> entry : results.getResults().entrySet()) {
-			logger.info("The sink {} in method {} was called with values from the following sources:",
-                    entry.getKey(), iCfg.getMethodOf(entry.getKey().getContext()).getSignature() );
+//			logger.info("The sink {} in method {} was called with values from the following sources:",
+//                    entry.getKey(), iCfg.getMethodOf(entry.getKey().getContext()).getSignature() );
 			for (SourceInfo source : entry.getValue()) {
-				logger.info("- {} in method {}",source, iCfg.getMethodOf(source.getContext()).getSignature());
+//				logger.info("- {} in method {}",source, iCfg.getMethodOf(source.getContext()).getSignature());
 				if (source.getPath() != null && !source.getPath().isEmpty()) {
-					logger.info("\ton Path: ");
+//					logger.info("\ton Path: ");
 					for (Unit p : source.getPath()) {
-						logger.info("\t -> " + iCfg.getMethodOf(p));
-						logger.info("\t\t -> " + p);
+//						logger.info("\t -> " + iCfg.getMethodOf(p));
+//						logger.info("\t\t -> " + p);
 					}
 				}
 			}
