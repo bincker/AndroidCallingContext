@@ -30,6 +30,7 @@ import java.util.concurrent.TimeoutException;
 
 import org.xmlpull.v1.XmlPullParserException;
 
+import soot.Scene;
 import soot.jimple.infoflow.IInfoflow.CallgraphAlgorithm;
 import soot.jimple.infoflow.InfoflowResults;
 import soot.jimple.infoflow.InfoflowResults.SinkInfo;
@@ -480,6 +481,7 @@ public class Test {
 				app.printSinks();
 				app.printSources();
 			}
+			
 				
 			System.out.println("Running data flow analysis...");
 			final InfoflowResults res = app.runInfoflow(new MyResultsAvailableHandler());
@@ -487,6 +489,9 @@ public class Test {
 			app.printEntrypoints();
 			System.out.println("Analysis has run for " + (System.nanoTime() - beforeRun) / 1E9 + " seconds");
 			return res;
+			//final InfoflowResults res = null;
+			//System.out.println("Analysis has run for " + (System.nanoTime() - beforeRun) / 1E9 + " seconds");
+			//return res;
 		} catch (IOException ex) {
 			System.err.println("Could not read file: " + ex.getMessage());
 			ex.printStackTrace();

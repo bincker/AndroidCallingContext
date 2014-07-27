@@ -2,14 +2,14 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="test"/>
-	<classpathentry kind="lib" path="/Users/bozhou/AndroidCallingContext/soot.jar"/>
-	<classpathentry kind="lib" path="/Users/bozhou/AndroidCallingContext/slf4j-api-1.7.5.jar"/>
-	<classpathentry kind="lib" path="/Users/bozhou/AndroidCallingContext/slf4j-simple-1.7.5.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/polyglot.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/axml-2.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/AXMLPrinter2.jar" sourcepath="lib/AXMLPrinter2-src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/soot-infoflow"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/soot-infoflow"/>
+	<classpathentry exported="true" kind="lib" path="H:/flowdroid/soot.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/slf4j-api-1.7.5.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/slf4j-simple-1.7.5.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

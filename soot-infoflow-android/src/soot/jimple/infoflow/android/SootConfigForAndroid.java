@@ -30,7 +30,8 @@ public class SootConfigForAndroid implements IInfoflowConfig{
 		excludeList.add("javax.servlet.");
 		options.set_exclude(excludeList);
 		Options.v().set_no_bodies_for_excluded(true);
-		options.set_output_format(Options.output_format_none);
+		options.set_output_format(Options.output_format_xml);
+		options.v().set_output_dir("H:\\GitHub\\AndroidCallingContext\\soot-infoflow-android\\sootOutput");
 	}
 
 }

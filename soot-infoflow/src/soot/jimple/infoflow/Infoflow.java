@@ -60,6 +60,7 @@ import soot.jimple.infoflow.solver.fastSolver.InfoflowSolver;
 import soot.jimple.infoflow.source.ISourceSinkManager;
 import soot.jimple.infoflow.util.SootMethodRepresentationParser;
 import soot.jimple.infoflow.util.SystemClassHandler;
+import soot.jimple.toolkits.callgraph.CallGraph;
 import soot.jimple.toolkits.callgraph.ReachableMethods;
 import soot.options.Options;
 /**
@@ -166,7 +167,8 @@ public class Infoflow extends AbstractInfoflow {
 		if (logger.isDebugEnabled())
 			Options.v().set_output_format(Options.output_format_jimple);
 		else
-			Options.v().set_output_format(Options.output_format_none);
+			Options.v().set_output_format(Options.output_format_xml);
+		Options.v().set_output_dir("H:\\GitHub\\AndroidCallingContext\\soot-infoflow-android\\sootOutput");
 		
 		// We only need to distinguish between application and library classes
 		// if we use the OnTheFly ICFG
@@ -282,9 +284,14 @@ public class Infoflow extends AbstractInfoflow {
 	        PackManager.v().getPack("wjpp").apply();
 	        PackManager.v().getPack("cg").apply();
 		}
-        runAnalysis(sourcesSinks, null);
+		
+		CallGraph appCallGraph = Scene.v().getCallGraph();
+		System.out.println(appCallGraph);
+		System.out.println("Callgraph has " + Scene.v().getCallGraph().size() + " edges");
+        //runAnalysis(sourcesSinks, null);
 		if (logger.isDebugEnabled())
 			PackManager.v().writeOutput();
+		System.out.println("Data flow analysis done.");
 	}
 
 
@@ -325,9 +332,14 @@ public class Infoflow extends AbstractInfoflow {
 	        PackManager.v().getPack("wjpp").apply();
 	        PackManager.v().getPack("cg").apply();
 		}
-        runAnalysis(sourcesSinks, seeds);
+		
+		CallGraph appCallGraph = Scene.v().getCallGraph();
+		System.out.println(appCallGraph);
+		System.out.println("Callgraph has " + Scene.v().getCallGraph().size() + " edges");
+        //runAnalysis(sourcesSinks, seeds);
 		if (logger.isDebugEnabled())
 			PackManager.v().writeOutput();
+		System.out.println("Data flow analysis done.");
 	}
 
 	private void runAnalysis(final ISourceSinkManager sourcesSinks, final Set<String> additionalSeeds) {

@@ -13,6 +13,7 @@ package soot.jimple.infoflow.android;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -185,10 +186,14 @@ public class SetupApplication {
 		if (this.entrypoints == null)
 			System.out.println("Entry points not initialized");
 		else {
-			System.out.println("Classes containing entry points:");
-			for (String className : entrypoints)
+			System.out.println("The following " + entrypoints.size() + " Classes containing entry points:");		
+			for (String className : entrypoints){
 				System.out.println("\t" + className);
-			System.out.println("End of Entrypoints");
+			}
+			System.out.println("There are " + this.callbackMethods.size() + " classes have detail entry point methods: ");
+			for (Set<AndroidMethod> entrymethods : this.callbackMethods.values()){
+				System.out.println("\t" + entrymethods);
+			}
 		}
 	}
 
@@ -266,8 +271,6 @@ public class SetupApplication {
 		sources = new HashSet<AndroidMethod>(sourceMethods);
 		sinks = new HashSet<AndroidMethod>(sinkMethods);
 		
-		System.out.println("Entry point calculation done.");
-		
 		// Clean up everything we no longer need
 		soot.G.reset();
 		
@@ -286,6 +289,7 @@ public class SetupApplication {
 		}
 		
 		entryPointCreator = createEntryPointCreator();
+		System.out.println("Entry point calculation done.");
 	}
 
 	/**
@@ -378,6 +382,7 @@ public class SetupApplication {
 								continue;
 							}
 							methods.add(new AndroidMethod(callbackMethod));
+							System.out.println("Method name" + methodName);
 						}
 				}
 				else
@@ -424,7 +429,8 @@ public class SetupApplication {
 	private void initializeSoot() {
 		Options.v().set_no_bodies_for_excluded(true);
 		Options.v().set_allow_phantom_refs(true);
-		Options.v().set_output_format(Options.output_format_none);
+		Options.v().set_output_format(Options.output_format_xml);
+		Options.v().set_output_dir("H:\\GitHub\\AndroidCallingContext\\soot-infoflow-android\\sootOutput");
 		Options.v().set_whole_program(true);
 		Options.v().set_process_dir(Collections.singletonList(apkFileLocation));
 		Options.v().set_soot_classpath(forceAndroidJar ? androidJar
@@ -489,7 +495,7 @@ public class SetupApplication {
 			path = androidJar;
 		else
 			path = Scene.v().getAndroidJarPath(androidJar, apkFileLocation);
-		
+
 		info.setTaintWrapper(taintWrapper);
 		info.setSootConfig(new SootConfigForAndroid());
 		if (onResultsAvailable != null)
@@ -532,6 +538,7 @@ public class SetupApplication {
 				methodSigs.add(am.getSignature());
 		}
 		entryPointCreator.setCallbackFunctions(callbackMethodSigs);
+//		System.out.println("Method list: " + callbackMethodSigs);
 		return entryPointCreator;
 	}
 	
