@@ -10,8 +10,13 @@
  ******************************************************************************/
 package soot.jimple.infoflow.android;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -181,19 +186,18 @@ public class SetupApplication {
 
 	/**
 	 * Prints list of classes containing entry points to stdout
+	 * @throws IOException 
 	 */
-	public void printEntrypoints(){
+	public void printEntrypoints() throws IOException{
 		if (this.entrypoints == null)
 			System.out.println("Entry points not initialized");
 		else {
-			System.out.println("The following " + entrypoints.size() + " Classes containing entry points:");		
-			for (String className : entrypoints){
+			System.out.println("The following " + entrypoints.size() + " Classes containing entry points:");	
+			for (String className : entrypoints)
 				System.out.println("\t" + className);
-			}
 			System.out.println("There are " + this.callbackMethods.size() + " classes have detail entry point methods: ");
-			for (Set<AndroidMethod> entrymethods : this.callbackMethods.values()){
+			for (Set<AndroidMethod> entrymethods : this.callbackMethods.values())
 				System.out.println("\t" + entrymethods);
-			}
 		}
 	}
 

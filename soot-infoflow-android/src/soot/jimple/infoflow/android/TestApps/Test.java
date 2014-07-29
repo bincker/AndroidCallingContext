@@ -13,10 +13,12 @@ package soot.jimple.infoflow.android.TestApps;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
@@ -197,19 +199,16 @@ public class Test {
 			}
 			else
 				fullFilePath = fileName;
-
+	
 			// Run the analysis
 			if (timeout > 0)
 				runAnalysisTimeout(fullFilePath, args[1]);
 			else if (sysTimeout > 0)
 				runAnalysisSysTimeout(fullFilePath, args[1]);
-			else
+			else			
 				runAnalysis(fullFilePath, args[1]);
-
 			System.gc();
 		}
-		
-//		System.out.println("Test, get the result");
 	}
 
 
@@ -482,10 +481,10 @@ public class Test {
 				app.printSources();
 			}
 			
-				
 			System.out.println("Running data flow analysis...");
+			System.setOut(new PrintStream(new FileOutputStream(fileName + ".txt")));
 			final InfoflowResults res = app.runInfoflow(new MyResultsAvailableHandler());
-			System.out.println("The entry point is like this:");
+			//System.out.println("The entry point is like this:");
 			app.printEntrypoints();
 			System.out.println("Analysis has run for " + (System.nanoTime() - beforeRun) / 1E9 + " seconds");
 			return res;

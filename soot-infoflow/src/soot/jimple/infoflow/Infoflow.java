@@ -164,11 +164,12 @@ public class Infoflow extends AbstractInfoflow {
 				
 		Options.v().set_no_bodies_for_excluded(true);
 		Options.v().set_allow_phantom_refs(true);
+		Options.v().set_output_dir("H:\\GitHub\\AndroidCallingContext\\soot-infoflow-android\\sootOutput");
 		if (logger.isDebugEnabled())
 			Options.v().set_output_format(Options.output_format_jimple);
 		else
-			Options.v().set_output_format(Options.output_format_xml);
-		Options.v().set_output_dir("H:\\GitHub\\AndroidCallingContext\\soot-infoflow-android\\sootOutput");
+			Options.v().set_output_format(Options.output_format_xml);		
+		//System.out.println("Output done.");
 		
 		// We only need to distinguish between application and library classes
 		// if we use the OnTheFly ICFG
@@ -289,6 +290,7 @@ public class Infoflow extends AbstractInfoflow {
 		System.out.println(appCallGraph);
 		System.out.println("Callgraph has " + Scene.v().getCallGraph().size() + " edges");
         //runAnalysis(sourcesSinks, null);
+		runTempAnalysis(sourcesSinks, null);
 		if (logger.isDebugEnabled())
 			PackManager.v().writeOutput();
 		System.out.println("Data flow analysis done.");
@@ -337,9 +339,30 @@ public class Infoflow extends AbstractInfoflow {
 		System.out.println(appCallGraph);
 		System.out.println("Callgraph has " + Scene.v().getCallGraph().size() + " edges");
         //runAnalysis(sourcesSinks, seeds);
+		runTempAnalysis(sourcesSinks, seeds);
 		if (logger.isDebugEnabled())
 			PackManager.v().writeOutput();
 		System.out.println("Data flow analysis done.");
+	}
+	
+	private void runTempAnalysis(final ISourceSinkManager sourcesSinks, final Set<String> additionalSeeds) {
+		// Run the preprocessors
+        for (Transform tr : preProcessors)
+            tr.apply();
+        
+
+        // build cfg
+        iCfg = icfgFactory.buildBiDirICFG(callgraphAlgorithm);
+        //System.out.println("Control flow graph has start node: \n" + iCfg.allNonCallStartNodes() + "\n and end node: \n" + iCfg.allNonCallEndNodes());
+        
+        Collection<SootMethod> methodList = getMethodsForSeeds(iCfg);
+        Collection<SootMethod> tmpMethodList = getMethodsForSeeds(iCfg);
+        Iterator<SootMethod> testList = methodList.iterator();
+        while(testList.hasNext()){
+        	System.out.println("\t" + testList.next());
+        	testList.remove();
+        }
+        System.out.println("Method list has size: " + tmpMethodList.size());
 	}
 
 	private void runAnalysis(final ISourceSinkManager sourcesSinks, final Set<String> additionalSeeds) {
@@ -502,15 +525,15 @@ public class Infoflow extends AbstractInfoflow {
 		if (results.getResults().isEmpty())
 			logger.warn("No results found.");
 		else for (Entry<SinkInfo, Set<SourceInfo>> entry : results.getResults().entrySet()) {
-//			logger.info("The sink {} in method {} was called with values from the following sources:",
-//                    entry.getKey(), iCfg.getMethodOf(entry.getKey().getContext()).getSignature() );
+			logger.info("The sink {} in method {} was called with values from the following sources:",
+                    entry.getKey(), iCfg.getMethodOf(entry.getKey().getContext()).getSignature() );
 			for (SourceInfo source : entry.getValue()) {
-//				logger.info("- {} in method {}",source, iCfg.getMethodOf(source.getContext()).getSignature());
+				logger.info("- {} in method {}",source, iCfg.getMethodOf(source.getContext()).getSignature());
 				if (source.getPath() != null && !source.getPath().isEmpty()) {
-//					logger.info("\ton Path: ");
+					logger.info("\ton Path: ");
 					for (Unit p : source.getPath()) {
-//						logger.info("\t -> " + iCfg.getMethodOf(p));
-//						logger.info("\t\t -> " + p);
+						logger.info("\t -> " + iCfg.getMethodOf(p));
+						logger.info("\t\t -> " + p);
 					}
 				}
 			}

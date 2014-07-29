@@ -391,6 +391,7 @@ public class AndroidEntryPointCreator extends BaseEntryPointCreator implements I
 			mainMethod.getActiveBody().validate();
 		
 		logger.info("Generated main method:\n{}", body);
+		System.out.println("The dummy main method is like this: \n" + body);
 		return mainMethod;
 	}
 	
